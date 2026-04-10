@@ -91,7 +91,7 @@ class InvokeDispatcher(
         )
     if (spec.requiresForeground && !isForeground()) {
       return GatewaySession.InvokeResult.error(
-        code = "NODE_BACKGROUND_UNAVAILABLE",
+        code = "节点后台不可用",
         message = "NODE_BACKGROUND_UNAVAILABLE: canvas/camera/screen commands require foreground",
       )
     }
@@ -254,7 +254,7 @@ class InvokeDispatcher(
       block()
     } catch (_: Throwable) {
       GatewaySession.InvokeResult.error(
-        code = "NODE_BACKGROUND_UNAVAILABLE",
+        code = "节点后台不可用",
         message = "NODE_BACKGROUND_UNAVAILABLE: canvas unavailable",
       )
     }
@@ -268,7 +268,7 @@ class InvokeDispatcher(
           null
         } else {
           GatewaySession.InvokeResult.error(
-            code = "CAMERA_DISABLED",
+            code = "相机已禁用",
             message = "CAMERA_DISABLED: enable Camera in Settings",
           )
         }
