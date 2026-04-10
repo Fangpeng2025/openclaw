@@ -137,7 +137,7 @@ class ConnectionManager(
       platform = "android",
       mode = clientMode,
       instanceId = prefs.instanceId.value,
-      deviceFamily = "Android",
+      deviceFamily = "安卓",
       modelIdentifier = resolveModelIdentifier(),
     )
   }
