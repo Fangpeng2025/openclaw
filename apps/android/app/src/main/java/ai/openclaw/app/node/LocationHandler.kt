@@ -99,7 +99,7 @@ class LocationHandler private constructor(
     }
     if (!dataSource.hasFinePermission(appContext) && !dataSource.hasCoarsePermission(appContext)) {
       return GatewaySession.InvokeResult.error(
-        code = "LOCATION_PERMISSION_REQUIRED",
+        code = "需要位置权限",
         message = "LOCATION_PERMISSION_REQUIRED: grant Location permission",
       )
     }
