@@ -139,9 +139,9 @@ class DeviceHandler(
     val appBuild = BuildConfig.VERSION_CODE.toString()
 
     return buildJsonObject {
-      put("deviceName", JsonPrimitive(model.ifEmpty { "Android" }))
+      put("deviceName", JsonPrimitive(model.ifEmpty { "安卓" }))
       put("modelIdentifier", JsonPrimitive(modelIdentifier.ifEmpty { listOf(manufacturer, model).filter { it.isNotEmpty() }.joinToString(" ") }))
-      put("systemName", JsonPrimitive("Android"))
+      put("systemName", JsonPrimitive("安卓"))
       put("systemVersion", JsonPrimitive(systemVersion.ifEmpty { Build.VERSION.SDK_INT.toString() }))
       put("appVersion", JsonPrimitive(appVersion.ifEmpty { "dev" }))
       put("appBuild", JsonPrimitive(appBuild.ifEmpty { "0" }))
