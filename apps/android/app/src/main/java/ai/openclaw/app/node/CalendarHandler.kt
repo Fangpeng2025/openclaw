@@ -234,7 +234,7 @@ class CalendarHandler private constructor(
   fun handleCalendarEvents(paramsJson: String?): GatewaySession.InvokeResult {
     if (!dataSource.hasReadPermission(appContext)) {
       return GatewaySession.InvokeResult.error(
-        code = "CALENDAR_PERMISSION_REQUIRED",
+        code = "需要日历权限",
         message = "CALENDAR_PERMISSION_REQUIRED: grant Calendar permission",
       )
     }
@@ -265,7 +265,7 @@ class CalendarHandler private constructor(
   fun handleCalendarAdd(paramsJson: String?): GatewaySession.InvokeResult {
     if (!dataSource.hasWritePermission(appContext)) {
       return GatewaySession.InvokeResult.error(
-        code = "CALENDAR_PERMISSION_REQUIRED",
+        code = "需要日历权限",
         message = "CALENDAR_PERMISSION_REQUIRED: grant Calendar permission",
       )
     }
