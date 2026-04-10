@@ -21,6 +21,6 @@ object DeviceNames {
         .joinToString(" ")
         .trim()
 
-    return model.ifEmpty { "Android Node" }
+    return model.ifEmpty { "安卓节点" }
   }
 }
