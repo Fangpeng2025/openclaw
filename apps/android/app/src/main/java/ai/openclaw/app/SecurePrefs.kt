@@ -456,10 +456,10 @@ class SecurePrefs(
 
   private fun loadOrMigrateDisplayName(context: Context): String {
     val existing = plainPrefs.getString(displayNameKey, null)?.trim().orEmpty()
-    if (existing.isNotEmpty() && existing != "Android Node") return existing
+    if (existing.isNotEmpty() && existing != "安卓节点") return existing
 
     val candidate = DeviceNames.bestDefaultNodeName(context).trim()
-    val resolved = candidate.ifEmpty { "Android Node" }
+    val resolved = candidate.ifEmpty { "安卓节点" }
 
     plainPrefs.edit { putString(displayNameKey, resolved) }
     return resolved
