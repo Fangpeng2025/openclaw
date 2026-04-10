@@ -128,8 +128,8 @@ class PermissionRequester(private val activity: ComponentActivity) {
           AlertDialog.Builder(activity)
             .setTitle("Permission required")
             .setMessage(buildRationaleMessage(permissions))
-            .setPositiveButton("Continue") { _, _ -> finish(true) }
-            .setNegativeButton("Not now") { _, _ -> finish(false) }
+            .setPositiveButton("继续") { _, _ -> finish(true) }
+            .setNegativeButton("暂时不") { _, _ -> finish(false) }
             .setOnCancelListener { finish(false) }
             .show()
       }
@@ -155,9 +155,9 @@ class PermissionRequester(private val activity: ComponentActivity) {
       lifecycle.addObserver(actualObserver)
       dialog =
         AlertDialog.Builder(activity)
-          .setTitle("Enable permission in Settings")
+          .setTitle("在设置中启用权限")
           .setMessage(buildSettingsMessage(permissions))
-          .setPositiveButton("Open Settings") { _, _ ->
+          .setPositiveButton("打开设置") { _, _ ->
             if (activity.isFinishing || activity.isDestroyed) return@setPositiveButton
             val intent =
               Intent(
@@ -166,7 +166,7 @@ class PermissionRequester(private val activity: ComponentActivity) {
               )
             activity.startActivity(intent)
           }
-          .setNegativeButton("Cancel", null)
+          .setNegativeButton("取消", null)
           .setOnDismissListener { removeObserver() }
           .show()
     }
@@ -183,8 +183,8 @@ class PermissionRequester(private val activity: ComponentActivity) {
 
   private fun permissionLabel(permission: String): String =
     when (permission) {
-      Manifest.permission.CAMERA -> "Camera"
-      Manifest.permission.RECORD_AUDIO -> "Microphone"
+      Manifest.permission.CAMERA -> "相机"
+      Manifest.permission.RECORD_AUDIO -> "麦克风"
       Manifest.permission.SEND_SMS -> "Send SMS"
       Manifest.permission.READ_SMS -> "Read SMS"
       Manifest.permission.READ_CONTACTS -> "Read Contacts"
@@ -192,9 +192,9 @@ class PermissionRequester(private val activity: ComponentActivity) {
       Manifest.permission.READ_CALENDAR -> "Read Calendar"
       Manifest.permission.WRITE_CALENDAR -> "Write Calendar"
       Manifest.permission.READ_CALL_LOG -> "Read Call Log"
-      Manifest.permission.ACTIVITY_RECOGNITION -> "Motion Activity"
-      Manifest.permission.READ_MEDIA_IMAGES -> "Photos"
-      Manifest.permission.READ_EXTERNAL_STORAGE -> "Photos"
+      Manifest.permission.ACTIVITY_RECOGNITION -> "运动活动"
+      Manifest.permission.READ_MEDIA_IMAGES -> "照片"
+      Manifest.permission.READ_EXTERNAL_STORAGE -> "照片"
       else -> permission
     }
 }
