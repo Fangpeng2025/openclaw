@@ -25,7 +25,7 @@ class VoiceWakeManager(
   private val _isListening = MutableStateFlow(false)
   val isListening: StateFlow<Boolean> = _isListening
 
-  private val _statusText = MutableStateFlow("Off")
+  private val _statusText = MutableStateFlow("关")
   val statusText: StateFlow<String> = _statusText
 
   var triggerWords: List<String> = emptyList()
@@ -62,7 +62,7 @@ class VoiceWakeManager(
     }
   }
 
-  fun stop(statusText: String = "Off") {
+  fun stop(statusText: String = "关") {
     stopRequested = true
     restartJob?.cancel()
     restartJob = null
@@ -85,7 +85,7 @@ class VoiceWakeManager(
         putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, context.packageName)
       }
 
-    _statusText.value = "Listening"
+    _statusText.value = "听取中"
     _isListening.value = true
     r.startListening(intent)
   }
@@ -121,7 +121,7 @@ class VoiceWakeManager(
   private val listener =
     object : RecognitionListener {
       override fun onReadyForSpeech(params: Bundle?) {
-        _statusText.value = "Listening"
+        _statusText.value = "听取中"
       }
 
       override fun onBeginningOfSpeech() {}
@@ -144,14 +144,14 @@ class VoiceWakeManager(
 
         _statusText.value =
           when (error) {
-            SpeechRecognizer.ERROR_AUDIO -> "Audio error"
-            SpeechRecognizer.ERROR_CLIENT -> "Client error"
-            SpeechRecognizer.ERROR_NETWORK -> "Network error"
-            SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Network timeout"
-            SpeechRecognizer.ERROR_NO_MATCH -> "Listening"
+            SpeechRecognizer.ERROR_AUDIO -> "音频错误"
+            SpeechRecognizer.ERROR_CLIENT -> "客户端错误"
+            SpeechRecognizer.ERROR_NETWORK -> "网络错误"
+            SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "网络超时"
+            SpeechRecognizer.ERROR_NO_MATCH -> "听取中"
             SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> "Recognizer busy"
             SpeechRecognizer.ERROR_SERVER -> "Server error"
-            SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "Listening"
+            SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "听取中"
             else -> "Speech error ($error)"
           }
         scheduleRestart(delayMs = 600)
