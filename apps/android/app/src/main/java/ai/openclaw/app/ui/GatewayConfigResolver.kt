@@ -235,7 +235,7 @@ internal fun gatewayEndpointValidationMessage(
       when (source) {
         GatewayEndpointInputSource.SETUP_CODE -> "Setup code has invalid gateway URL."
         GatewayEndpointInputSource.QR_SCAN -> "QR code did not contain a valid setup code."
-        GatewayEndpointInputSource.MANUAL -> "Enter a valid manual endpoint to connect."
+        GatewayEndpointInputSource.MANUAL -> "输入有效端点以连接。"
       }
   }
 }
