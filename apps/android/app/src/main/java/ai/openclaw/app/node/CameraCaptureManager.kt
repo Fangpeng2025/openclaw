@@ -358,9 +358,9 @@ class CameraCaptureManager(private val context: Context) {
       if (lensFacing == CameraCharacteristics.LENS_FACING_EXTERNAL) "external" else "builtIn"
     val name =
       when (position) {
-        "front" -> "Front Camera"
-        "back" -> "Back Camera"
-        "external" -> "External Camera"
+        "front" -> "前置摄像头"
+        "back" -> "后置摄像头"
+        "external" -> "外部摄像头"
         else -> "Camera $cameraId"
       }
     return CameraDeviceInfo(
