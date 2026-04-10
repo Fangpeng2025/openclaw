@@ -156,7 +156,7 @@ class MicCaptureManager(
           }
         }
       if (pausedForTts) {
-        _statusText.value = if (_isSending.value) "Speaking · waiting for reply" else "Speaking…"
+        _statusText.value = if (_isSending.value) "Speaking · waiting for reply" else "说话中…"
         return
       }
       start()
@@ -197,7 +197,7 @@ class MicCaptureManager(
         _isListening.value = false
         _inputLevel.value = 0f
         _liveTranscript.value = null
-        _statusText.value = if (_isSending.value) "Speaking · waiting for reply" else "Speaking…"
+        _statusText.value = if (_isSending.value) "Speaking · waiting for reply" else "说话中…"
         true
       }
     if (!shouldPause) return
@@ -220,7 +220,7 @@ class MicCaptureManager(
           _statusText.value =
             when {
               _micEnabled.value && _isSending.value -> "Listening · sending queued voice"
-              _micEnabled.value -> "Listening"
+              _micEnabled.value -> "听取中"
               _isSending.value -> "Mic off · sending…"
               else -> "Mic off"
             }
@@ -353,7 +353,7 @@ class MicCaptureManager(
       when {
         _isSending.value -> "Listening · sending queued voice"
         hasQueuedMessages() -> "Listening · ${queuedMessageCount()} queued"
-        else -> "Listening"
+        else -> "听取中"
       }
     _isListening.value = true
     recognizerInstance.startListening(intent)
@@ -411,7 +411,7 @@ class MicCaptureManager(
     if (_isSending.value) return
     if (!hasQueuedMessages()) {
       if (_micEnabled.value) {
-        _statusText.value = "Listening"
+        _statusText.value = "听取中"
       } else {
         _statusText.value = "Mic off"
       }
@@ -621,16 +621,16 @@ class MicCaptureManager(
         _inputLevel.value = 0f
         val status =
           when (error) {
-            SpeechRecognizer.ERROR_AUDIO -> "Audio error"
-            SpeechRecognizer.ERROR_CLIENT -> "Client error"
-            SpeechRecognizer.ERROR_NETWORK -> "Network error"
-            SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Network timeout"
-            SpeechRecognizer.ERROR_NO_MATCH -> "Listening"
+            SpeechRecognizer.ERROR_AUDIO -> "音频错误"
+            SpeechRecognizer.ERROR_CLIENT -> "客户端错误"
+            SpeechRecognizer.ERROR_NETWORK -> "网络错误"
+            SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "网络超时"
+            SpeechRecognizer.ERROR_NO_MATCH -> "听取中"
             SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> "Recognizer busy"
             SpeechRecognizer.ERROR_SERVER -> "Server error"
-            SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "Listening"
+            SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "听取中"
             SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "Microphone permission required"
-            SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED -> "Language not supported on this device"
+            SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED -> "此设备不支持该语言"
             SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE -> "Language unavailable on this device"
             SpeechRecognizer.ERROR_SERVER_DISCONNECTED -> "Speech service disconnected"
             SpeechRecognizer.ERROR_TOO_MANY_REQUESTS -> "Speech requests limited; retrying"
