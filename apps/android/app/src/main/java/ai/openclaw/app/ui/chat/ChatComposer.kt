@@ -189,7 +189,7 @@ fun ChatComposer(
       }
 
       SecondaryActionButton(
-        label = "Attach",
+        label = "附件",
         icon = Icons.Default.AttachFile,
         enabled = true,
         compact = true,
@@ -197,7 +197,7 @@ fun ChatComposer(
       )
 
       SecondaryActionButton(
-        label = "Refresh",
+        label = "刷新",
         icon = Icons.Default.Refresh,
         enabled = true,
         compact = true,
@@ -205,7 +205,7 @@ fun ChatComposer(
       )
 
       SecondaryActionButton(
-        label = "Abort",
+        label = "中止",
         icon = Icons.Default.Stop,
         enabled = pendingRunCount > 0,
         compact = true,
@@ -240,7 +240,7 @@ fun ChatComposer(
         }
         Spacer(modifier = Modifier.width(6.dp))
         Text(
-          text = "Send",
+          text = "发送",
           style = mobileHeadline.copy(fontWeight = FontWeight.Bold),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
@@ -310,10 +310,10 @@ private fun ThinkingMenuItem(
 
 private fun thinkingLabel(raw: String): String {
   return when (raw.trim().lowercase()) {
-    "low" -> "Low"
-    "medium" -> "Medium"
-    "high" -> "High"
-    else -> "Off"
+    "low" -> "低"
+    "medium" -> "中"
+    "high" -> "高"
+    else -> "关"
   }
 }
 
