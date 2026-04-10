@@ -332,7 +332,7 @@ fun ConnectTabScreen(viewModel: MainViewModel) {
           Text(statusLabel, style = mobileBody.copy(fontFamily = FontFamily.Monospace), color = mobileText)
           if (pairingRequired) {
             Text(
-              "Approve this phone on the gateway. OpenClaw retries automatically while this screen stays open.",
+              "在网关上批准此手机。此屏幕保持打开时会自动重试。",
               style = mobileCallout,
               color = mobileTextSecondary,
             )
@@ -384,7 +384,7 @@ fun ConnectTabScreen(viewModel: MainViewModel) {
         }
         Icon(
           imageVector = if (advancedOpen) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-          contentDescription = if (advancedOpen) "Collapse advanced controls" else "Expand advanced controls",
+          contentDescription = if (advancedOpen) "收起高级设置" else "展开高级设置",
           tint = mobileTextSecondary,
         )
       }
@@ -483,7 +483,7 @@ fun ConnectTabScreen(viewModel: MainViewModel) {
             )
 
             Text(
-              if (manualTlsInput) "Port (optional, defaults to 443)" else "Port",
+              if (manualTlsInput) "Port (optional, defaults to 443)" else "端口",
               style = mobileCaption1.copy(fontWeight = FontWeight.SemiBold),
               color = mobileTextSecondary,
             )
