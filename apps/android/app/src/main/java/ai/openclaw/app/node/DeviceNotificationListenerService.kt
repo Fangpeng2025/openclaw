@@ -396,7 +396,7 @@ class DeviceNotificationListenerService : NotificationListenerService() {
         val pendingIntent = sbn.notification.contentIntent
           ?: return NotificationActionResult(
             ok = false,
-            code = "ACTION_UNAVAILABLE",
+            code = "操作不可用",
             message = "ACTION_UNAVAILABLE: notification has no open action",
           )
         runCatching {
@@ -406,7 +406,7 @@ class DeviceNotificationListenerService : NotificationListenerService() {
           onFailure = { err ->
             NotificationActionResult(
               ok = false,
-              code = "ACTION_FAILED",
+              code = "操作失败",
               message = "ACTION_FAILED: ${err.message ?: "open failed"}",
             )
           },
@@ -422,7 +422,7 @@ class DeviceNotificationListenerService : NotificationListenerService() {
           onFailure = { err ->
             NotificationActionResult(
               ok = false,
-              code = "ACTION_FAILED",
+              code = "操作失败",
               message = "ACTION_FAILED: ${err.message ?: "dismiss failed"}",
             )
           },
@@ -445,7 +445,7 @@ class DeviceNotificationListenerService : NotificationListenerService() {
             }
             ?: return NotificationActionResult(
               ok = false,
-              code = "ACTION_UNAVAILABLE",
+              code = "操作不可用",
               message = "ACTION_UNAVAILABLE: notification has no reply action",
             )
         val remoteInputs = action.remoteInputs ?: emptyArray()
@@ -462,7 +462,7 @@ class DeviceNotificationListenerService : NotificationListenerService() {
           onFailure = { err ->
             NotificationActionResult(
               ok = false,
-              code = "ACTION_FAILED",
+              code = "操作失败",
               message = "ACTION_FAILED: ${err.message ?: "reply failed"}",
             )
           },
