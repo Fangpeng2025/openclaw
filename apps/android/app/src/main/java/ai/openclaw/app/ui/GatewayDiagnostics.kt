@@ -17,7 +17,7 @@ internal fun openClawAndroidVersionLabel(): String {
 }
 
 internal fun gatewayStatusForDisplay(statusText: String): String {
-  return statusText.trim().ifEmpty { "Offline" }
+  return statusText.trim().ifEmpty { "离线" }
 }
 
 internal fun gatewayStatusHasDiagnostics(statusText: String): Boolean {
@@ -39,7 +39,7 @@ internal fun buildGatewayDiagnosticsReport(
     listOfNotNull(Build.MANUFACTURER, Build.MODEL)
       .joinToString(" ")
       .trim()
-      .ifEmpty { "Android" }
+      .ifEmpty { "安卓" }
   val androidVersion = Build.VERSION.RELEASE?.trim().orEmpty().ifEmpty { Build.VERSION.SDK_INT.toString() }
   val endpoint = gatewayAddress.trim().ifEmpty { "unknown" }
   val status = gatewayStatusForDisplay(statusText)
