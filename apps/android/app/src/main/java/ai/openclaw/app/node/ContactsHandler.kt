@@ -305,7 +305,7 @@ class ContactsHandler private constructor(
   fun handleContactsSearch(paramsJson: String?): GatewaySession.InvokeResult {
     if (!dataSource.hasReadPermission(appContext)) {
       return GatewaySession.InvokeResult.error(
-        code = "CONTACTS_PERMISSION_REQUIRED",
+        code = "需要联系人权限",
         message = "CONTACTS_PERMISSION_REQUIRED: grant Contacts permission",
       )
     }
@@ -338,7 +338,7 @@ class ContactsHandler private constructor(
   fun handleContactsAdd(paramsJson: String?): GatewaySession.InvokeResult {
     if (!dataSource.hasWritePermission(appContext)) {
       return GatewaySession.InvokeResult.error(
-        code = "CONTACTS_PERMISSION_REQUIRED",
+        code = "需要联系人权限",
         message = "CONTACTS_PERMISSION_REQUIRED: grant Contacts permission",
       )
     }
