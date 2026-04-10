@@ -265,7 +265,7 @@ class ChatController(
         _healthOk.value = true
       }
       "seqGap" -> {
-        _errorText.value = "Event stream interrupted; try refreshing."
+        _errorText.value = "事件流中断；请刷新。"
         clearPendingRuns()
       }
       "chat" -> {
@@ -358,7 +358,7 @@ class ChatController(
       }
       "final", "aborted", "error" -> {
         if (state == "error") {
-          _errorText.value = payload["errorMessage"].asStringOrNull() ?: "Chat failed"
+          _errorText.value = payload["errorMessage"].asStringOrNull() ?: "聊天失败"
         }
         if (runId != null) clearPendingRun(runId) else clearPendingRuns()
         pendingToolCallsById.clear()
@@ -419,7 +419,7 @@ class ChatController(
         }
       }
       "error" -> {
-        _errorText.value = "Event stream interrupted; try refreshing."
+        _errorText.value = "事件流中断；请刷新。"
         clearPendingRuns()
         pendingToolCallsById.clear()
         publishPendingToolCalls()
