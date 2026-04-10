@@ -170,7 +170,7 @@ class GatewaySession(
       job = null
       canvasHostUrl = null
       mainSessionKey = null
-      onDisconnected("Offline")
+      onDisconnected("离线")
     }
   }
 
@@ -772,7 +772,7 @@ class GatewaySession(
       }
 
       try {
-        onDisconnected(if (attempt == 0) "Connecting…" else "Reconnecting…")
+        onDisconnected(if (attempt == 0) "连接中…" else "Reconnecting…")
         connectOnce(target)
         attempt = 0
       } catch (err: Throwable) {
@@ -930,26 +930,26 @@ class GatewaySession(
     val recommendedNextStep = error.details?.recommendedNextStep
     return error.details?.canRetryWithDeviceToken == true ||
       recommendedNextStep == "retry_with_device_token" ||
-      detailCode == "AUTH_TOKEN_MISMATCH"
+      detailCode == "令牌不匹配"
   }
 
   private fun shouldPauseReconnectAfterAuthFailure(error: ErrorShape): Boolean {
     return when (error.details?.code) {
-      "AUTH_TOKEN_MISSING",
-      "AUTH_BOOTSTRAP_TOKEN_INVALID",
-      "AUTH_PASSWORD_MISSING",
-      "AUTH_PASSWORD_MISMATCH",
-      "AUTH_RATE_LIMITED",
+      "缺少令牌",
+      "引导令牌无效",
+      "缺少密码",
+      "密码不匹配",
+      "请求过于频繁",
       "PAIRING_REQUIRED",
       "CONTROL_UI_DEVICE_IDENTITY_REQUIRED",
       "DEVICE_IDENTITY_REQUIRED" -> true
-      "AUTH_TOKEN_MISMATCH" -> deviceTokenRetryBudgetUsed && !pendingDeviceTokenRetry
+      "令牌不匹配" -> deviceTokenRetryBudgetUsed && !pendingDeviceTokenRetry
       else -> false
     }
   }
 
   private fun shouldClearStoredDeviceTokenAfterRetry(error: ErrorShape): Boolean {
-    return error.details?.code == "AUTH_DEVICE_TOKEN_MISMATCH"
+    return error.details?.code == "设备令牌不匹配"
   }
 
   private fun isTrustedDeviceRetryEndpoint(
