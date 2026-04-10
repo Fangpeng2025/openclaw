@@ -225,13 +225,13 @@ fun VoiceTabScreen(viewModel: MainViewModel) {
           ) {
             Icon(
               imageVector = if (speakerEnabled) Icons.AutoMirrored.Filled.VolumeUp else Icons.AutoMirrored.Filled.VolumeOff,
-              contentDescription = if (speakerEnabled) "Mute speaker" else "Unmute speaker",
+              contentDescription = if (speakerEnabled) "静音扬声器" else "Unmute speaker",
               modifier = Modifier.size(22.dp),
               tint = if (speakerEnabled) mobileTextSecondary else mobileDanger,
             )
           }
           Text(
-            if (speakerEnabled) "Speaker" else "Muted",
+            if (speakerEnabled) "Speaker" else "已静音",
             style = mobileCaption2,
             color = if (speakerEnabled) mobileTextTertiary else mobileDanger,
           )
@@ -301,8 +301,8 @@ fun VoiceTabScreen(viewModel: MainViewModel) {
         when {
           queueCount > 0 -> "$queueCount queued"
           micIsSending -> "Sending"
-          micCooldown -> "Cooldown"
-          micEnabled -> "Listening"
+          micCooldown -> "冷却中"
+          micEnabled -> "听取中"
           else -> "Mic off"
         }
       val stateColor =
@@ -371,12 +371,12 @@ private fun VoiceTurnBubble(entry: VoiceConversationEntry) {
         verticalArrangement = Arrangement.spacedBy(3.dp),
       ) {
         Text(
-          if (isUser) "You" else "OpenClaw",
+          if (isUser) "你" else "OpenClaw",
           style = mobileCaption2.copy(fontWeight = FontWeight.SemiBold, letterSpacing = 0.6.sp),
           color = if (isUser) mobileAccent else mobileTextSecondary,
         )
         Text(
-          if (entry.isStreaming && entry.text.isBlank()) "Listening response…" else entry.text,
+          if (entry.isStreaming && entry.text.isBlank()) "听取回复中…" else entry.text,
           style = mobileCallout,
           color = mobileText,
         )
