@@ -103,8 +103,8 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 
 private enum class OnboardingStep(val index: Int, val label: String) {
-  Welcome(1, "Welcome"),
-  Gateway(2, "Gateway"),
+  Welcome(1, "欢迎"),
+  Gateway(2, "网关"),
   Permissions(3, "权限"),
   FinalCheck(4, "连接"),
 }
@@ -380,19 +380,19 @@ fun OnboardingFlow(viewModel: MainViewModel, modifier: Modifier = Modifier) {
       motionAvailable,
     ) {
       val enabled = mutableListOf<String>()
-      if (enableDiscovery) enabled += "Gateway discovery"
+      if (enableDiscovery) enabled += "网关发现"
       if (enableLocation) enabled += "位置"
       if (enableNotifications) enabled += "通知"
-      if (enableNotificationListener) enabled += "Notification listener"
+      if (enableNotificationListener) enabled += "通知监听器"
       if (enableMicrophone) enabled += "麦克风"
       if (enableCamera) enabled += "相机"
-      if (enablePhotos) enabled += "Photos"
-      if (enableContacts) enabled += "Contacts"
-      if (enableCalendar) enabled += "Calendar"
-      if (enableMotion && motionAvailable) enabled += "Motion"
-      if (smsAvailable && enableSms) enabled += "SMS"
-      if (callLogAvailable && enableCallLog) enabled += "Call Log"
-      if (enabled.isEmpty()) "None selected" else enabled.joinToString(", ")
+      if (enablePhotos) enabled += "照片"
+      if (enableContacts) enabled += "联系人"
+      if (enableCalendar) enabled += "日历"
+      if (enableMotion && motionAvailable) enabled += "运动"
+      if (smsAvailable && enableSms) enabled += "短信"
+      if (callLogAvailable && enableCallLog) enabled += "通话记录"
+      if (enabled.isEmpty()) "未选择" else enabled.joinToString(", ")
     }
 
   val proceedFromPermissions: () -> Unit = proceed@{
@@ -538,7 +538,7 @@ fun OnboardingFlow(viewModel: MainViewModel, modifier: Modifier = Modifier) {
             color = onboardingText,
           )
           Text(
-            "Mobile Setup",
+            "移动端设置",
             style = onboardingTitle1Style,
             color = onboardingTextSecondary,
           )
@@ -779,7 +779,7 @@ fun OnboardingFlow(viewModel: MainViewModel, modifier: Modifier = Modifier) {
           ) {
             Icon(
               Icons.AutoMirrored.Filled.ArrowBack,
-              contentDescription = "Back",
+              contentDescription = "返回",
               tint = if (backEnabled) onboardingTextSecondary else onboardingTextTertiary,
             )
           }
@@ -1012,26 +1012,26 @@ private fun WelcomeStep() {
   Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
     FeatureCard(
       icon = Icons.Default.Wifi,
-      title = "Connect to your gateway",
+      title = "连接到你的网关",
       subtitle = "Scan a QR code or enter your host manually",
       accentColor = onboardingAccent,
     )
     FeatureCard(
       icon = Icons.Default.Tune,
-      title = "Choose your permissions",
-      subtitle = "Enable only what you need, change anytime",
+      title = "选择权限",
+      subtitle = "按需启用，随时更改",
       accentColor = Color(0xFF7C5AC7),
     )
     FeatureCard(
       icon = Icons.Default.ChatBubble,
-      title = "Chat, voice, and screen",
-      subtitle = "Full operator control from your phone",
+      title = "聊天、语音和屏幕",
+      subtitle = "从手机完全控制操作员",
       accentColor = onboardingSuccess,
     )
     FeatureCard(
       icon = Icons.Default.CheckCircle,
       title = "Verify your connection",
-      subtitle = "Live check before you enter the app",
+      subtitle = "进入应用前实时检查",
       accentColor = Color(0xFFC8841A),
     )
   }
@@ -1094,12 +1094,12 @@ private fun GatewayStep(
         horizontalArrangement = Arrangement.SpaceBetween,
       ) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-          Text("Advanced setup", style = onboardingHeadlineStyle, color = onboardingText)
+          Text("高级设置", style = onboardingHeadlineStyle, color = onboardingText)
           Text("Paste setup code or enter host/port manually. Private LAN ws:// is supported; Tailscale/public hosts need wss://.", style = onboardingCaption1Style, color = onboardingTextSecondary)
         }
         Icon(
           imageVector = if (advancedOpen) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-          contentDescription = if (advancedOpen) "Collapse advanced setup" else "Expand advanced setup",
+          contentDescription = if (advancedOpen) "收起高级设置" else "展开高级设置",
           tint = onboardingTextSecondary,
         )
       }
@@ -1416,8 +1416,8 @@ private fun PermissionsStep(
 
     PermissionSectionHeader("System")
     PermissionToggleRow(
-      title = "Gateway discovery",
-      subtitle = "Find gateways on your local network",
+      title = "网关发现",
+      subtitle = "在本地网络查找网关",
       checked = enableDiscovery,
       granted = isPermissionGranted(context, discoveryPermission),
       onCheckedChange = onDiscoveryChange,
@@ -1434,7 +1434,7 @@ private fun PermissionsStep(
     if (Build.VERSION.SDK_INT >= 33) {
       PermissionToggleRow(
         title = "通知",
-        subtitle = "Alerts and foreground service notices",
+        subtitle = "提醒和前台服务通知",
         checked = enableNotifications,
         granted = isPermissionGranted(context, Manifest.permission.POST_NOTIFICATIONS),
         onCheckedChange = onNotificationsChange,
@@ -1442,14 +1442,14 @@ private fun PermissionsStep(
       InlineDivider()
     }
     PermissionToggleRow(
-      title = "Notification listener",
+      title = "通知监听器",
       subtitle = "Read and act on your notifications",
       checked = enableNotificationListener,
       granted = notificationListenerGranted,
       onCheckedChange = onNotificationListenerChange,
     )
 
-    PermissionSectionHeader("Media")
+    PermissionSectionHeader("媒体")
     PermissionToggleRow(
       title = "麦克风",
       subtitle = "Voice transcription in the Voice tab",
@@ -1467,8 +1467,8 @@ private fun PermissionsStep(
     )
     InlineDivider()
     PermissionToggleRow(
-      title = "Photos",
-      subtitle = "Access your recent photos",
+      title = "照片",
+      subtitle = "访问最近的照片",
       checked = enablePhotos,
       granted = isPermissionGranted(context, photosPermission),
       onCheckedChange = onPhotosChange,
@@ -1476,7 +1476,7 @@ private fun PermissionsStep(
 
     PermissionSectionHeader("Personal Data")
     PermissionToggleRow(
-      title = "Contacts",
+      title = "联系人",
       subtitle = "Search and add contacts",
       checked = enableContacts,
       granted = contactsGranted,
@@ -1484,7 +1484,7 @@ private fun PermissionsStep(
     )
     InlineDivider()
     PermissionToggleRow(
-      title = "Calendar",
+      title = "日历",
       subtitle = "Read and create calendar events",
       checked = enableCalendar,
       granted = calendarGranted,
@@ -1492,8 +1492,8 @@ private fun PermissionsStep(
     )
     InlineDivider()
     PermissionToggleRow(
-      title = "Motion",
-      subtitle = "Activity and step tracking",
+      title = "运动",
+      subtitle = "活动和步数追踪",
       checked = enableMotion,
       granted = motionGranted,
       onCheckedChange = onMotionChange,
@@ -1503,7 +1503,7 @@ private fun PermissionsStep(
     if (smsAvailable) {
       InlineDivider()
       PermissionToggleRow(
-        title = "SMS",
+        title = "短信",
         subtitle = "Send and search text messages via the gateway",
         checked = enableSms,
         granted =
@@ -1515,14 +1515,14 @@ private fun PermissionsStep(
     if (callLogAvailable) {
       InlineDivider()
       PermissionToggleRow(
-        title = "Call Log",
+        title = "通话记录",
         subtitle = "callLog.search",
         checked = enableCallLog,
         granted = isPermissionGranted(context, Manifest.permission.READ_CALL_LOG),
         onCheckedChange = onCallLogChange,
       )
     }
-    Text("All settings can be changed later in Settings.", style = onboardingCalloutStyle, color = onboardingTextSecondary)
+    Text("所有设置稍后都可在设置中更改。", style = onboardingCalloutStyle, color = onboardingTextSecondary)
   }
 }
 
@@ -1546,7 +1546,7 @@ private fun PermissionToggleRow(
   statusOverride: String? = null,
   onCheckedChange: (Boolean) -> Unit,
 ) {
-  val statusText = statusOverride ?: if (granted) "Granted" else "Not granted"
+  val statusText = statusOverride ?: if (granted) "已授予" else "未授予"
   val statusColor = when {
     statusOverride != null -> onboardingTextTertiary
     granted -> onboardingSuccess
@@ -1584,7 +1584,7 @@ private fun FinalStep(
   methodLabel: String,
 ) {
   val context = androidx.compose.ui.platform.LocalContext.current
-  val gatewayAddress = parsedGateway?.displayUrl ?: "Invalid gateway URL"
+  val gatewayAddress = parsedGateway?.displayUrl ?: "无效网关 URL"
   val statusLabel = gatewayStatusForDisplay(statusText)
   val showDiagnostics = gatewayStatusHasDiagnostics(statusText)
   val pairingRequired = gatewayStatusLooksLikePairing(statusText)
@@ -1598,13 +1598,13 @@ private fun FinalStep(
 
     SummaryCard(
       icon = Icons.Default.Link,
-      label = "Method",
+      label = "方法",
       value = methodLabel,
       accentColor = onboardingAccent,
     )
     SummaryCard(
       icon = Icons.Default.Cloud,
-      label = "Gateway",
+      label = "网关",
       value = gatewayAddress,
       accentColor = Color(0xFF7C5AC7),
     )
@@ -1715,15 +1715,15 @@ private fun FinalStep(
             }
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
               Text(
-                  if (pairingRequired) "Pairing Required" else "Connection Failed",
+                  if (pairingRequired) "Pairing Required" else "连接失败",
                   style = onboardingHeadlineStyle,
                   color = onboardingWarning,
               )
               Text(
                   if (pairingRequired) {
-                    "Approve this phone on the gateway host, or copy the report below."
+                    "在网关主机上批准此手机，或复制下方报告。"
                   } else {
-                    "Copy this report and give it to your Claw."
+                    "复制此报告给 Claw。"
                   },
                   style = onboardingCalloutStyle,
                   color = onboardingTextSecondary,
