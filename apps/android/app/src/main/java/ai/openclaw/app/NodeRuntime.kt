@@ -201,7 +201,7 @@ class NodeRuntime(
   private val _nodeConnected = MutableStateFlow(false)
   val nodeConnected: StateFlow<Boolean> = _nodeConnected.asStateFlow()
 
-  private val _statusText = MutableStateFlow("Offline")
+  private val _statusText = MutableStateFlow("离线")
   val statusText: StateFlow<String> = _statusText.asStateFlow()
 
   private val _pendingGatewayTrust = MutableStateFlow<GatewayTrustPrompt?>(null)
@@ -246,8 +246,8 @@ class NodeRuntime(
   private var didAutoRequestCanvasRehydrate = false
   private val canvasRehydrateSeq = AtomicLong(0)
   private var operatorConnected = false
-  private var operatorStatusText: String = "Offline"
-  private var nodeStatusText: String = "Offline"
+  private var operatorStatusText: String = "离线"
+  private var nodeStatusText: String = "离线"
 
   private val operatorSession =
     GatewaySession(
@@ -256,7 +256,7 @@ class NodeRuntime(
       deviceAuthStore = deviceAuthStore,
       onConnected = { name, remote, mainSessionKey ->
         operatorConnected = true
-        operatorStatusText = "Connected"
+        operatorStatusText = "已连接"
         _serverName.value = name
         _remoteAddress.value = remote
         _seamColorArgb.value = DEFAULT_SEAM_COLOR_ARGB
@@ -293,7 +293,7 @@ class NodeRuntime(
       deviceAuthStore = deviceAuthStore,
       onConnected = { _, _, _ ->
         _nodeConnected.value = true
-        nodeStatusText = "Connected"
+        nodeStatusText = "已连接"
         didAutoRequestCanvasRehydrate = false
         _canvasA2uiHydrated.value = false
         _canvasRehydratePending.value = false
@@ -446,15 +446,15 @@ class NodeRuntime(
     val node = nodeStatusText.trim()
     _statusText.value =
       when {
-        operatorConnected && _nodeConnected.value -> "Connected"
-        operatorConnected && !_nodeConnected.value -> "Connected (node offline)"
+        operatorConnected && _nodeConnected.value -> "已连接"
+        operatorConnected && !_nodeConnected.value -> "已连接（节点离线）"
         !operatorConnected && _nodeConnected.value ->
-          if (operator.isNotEmpty() && operator != "Offline") {
+          if (operator.isNotEmpty() && operator != "离线") {
             "Connected (operator: $operator)"
           } else {
-            "Connected (operator offline)"
+            "已连接（操作员离线）"
           }
-        operator.isNotBlank() && operator != "Offline" -> operator
+        operator.isNotBlank() && operator != "离线" -> operator
         else -> node
       }
     updateHomeCanvasState()
@@ -494,7 +494,7 @@ class NodeRuntime(
     scope.launch {
       if (!_nodeConnected.value) {
         _canvasRehydratePending.value = false
-        _canvasRehydrateErrorText.value = "Node offline. Reconnect and retry."
+        _canvasRehydrateErrorText.value = "节点离线。请重连后重试。"
         return@launch
       }
       if (!force && didAutoRequestCanvasRehydrate) return@launch
@@ -525,7 +525,7 @@ class NodeRuntime(
         }
         if (canvasRehydrateSeq.get() == requestId) {
           _canvasRehydratePending.value = false
-          _canvasRehydrateErrorText.value = "Failed to request restore. Tap to retry."
+          _canvasRehydrateErrorText.value = "恢复请求失败，点击重试。"
         }
         Log.w("OpenClawCanvas", "canvas rehydrate request failed ($source): transport unavailable")
         return@launch
@@ -536,7 +536,7 @@ class NodeRuntime(
         if (!_canvasRehydratePending.value) return@launch
         if (_canvasA2uiHydrated.value) return@launch
         _canvasRehydratePending.value = false
-        _canvasRehydrateErrorText.value = "No canvas update yet. Tap to retry."
+        _canvasRehydrateErrorText.value = "尚无画布更新。点击重试。"
       }
     }
   }
@@ -807,7 +807,7 @@ class NodeRuntime(
         _statusText.value = "Failed: no cached gateway endpoint"
         return
       }
-    operatorStatusText = "Connecting…"
+    operatorStatusText = "连接中…"
     updateStatus()
     connectWithAuth(endpoint = endpoint, auth = resolveGatewayConnectAuth(), reconnect = true)
   }
@@ -826,7 +826,7 @@ class NodeRuntime(
       )
     if (operatorAuth == null) {
       operatorConnected = false
-      operatorStatusText = "Offline"
+      operatorStatusText = "离线"
       operatorSession.disconnect()
       updateStatus()
     } else {
@@ -876,8 +876,8 @@ class NodeRuntime(
     }
 
     connectedEndpoint = endpoint
-    operatorStatusText = "Connecting…"
-    nodeStatusText = "Connecting…"
+    operatorStatusText = "连接中…"
+    nodeStatusText = "连接中…"
     updateStatus()
     connectWithAuth(endpoint = endpoint, auth = auth)
   }
@@ -911,7 +911,7 @@ class NodeRuntime(
 
   fun declineGatewayTrustPrompt() {
     _pendingGatewayTrust.value = null
-    _statusText.value = "Offline"
+    _statusText.value = "离线"
   }
 
   private fun gatewayTlsProbeFailureMessage(failure: GatewayTlsProbeFailure?): String {
@@ -949,7 +949,7 @@ class NodeRuntime(
     endpoint: GatewayEndpoint,
     auth: GatewayConnectAuth,
   ) {
-    if (operatorConnected || operatorStatusText == "Connecting…") {
+    if (operatorConnected || operatorStatusText == "连接中…") {
       return
     }
     val operatorAuth =
@@ -957,7 +957,7 @@ class NodeRuntime(
         auth = auth,
         storedOperatorToken = loadStoredRoleDeviceToken("operator"),
       ) ?: return
-    operatorStatusText = "Connecting…"
+    operatorStatusText = "连接中…"
     updateStatus()
     operatorSession.connect(
       endpoint,
@@ -1167,7 +1167,7 @@ class NodeRuntime(
     val state = resolveHomeCanvasGatewayState()
     val gatewayName = normalized(_serverName.value)
     val gatewayAddress = normalized(_remoteAddress.value)
-    val gatewayLabel = gatewayName ?: gatewayAddress ?: "Gateway"
+    val gatewayLabel = gatewayName ?: gatewayAddress ?: "网关"
     val activeAgentId = resolveActiveAgentId()
     val agents = homeCanvasAgents(activeAgentId)
 
@@ -1197,7 +1197,7 @@ class NodeRuntime(
           gatewayLabel = gatewayLabel,
           activeAgentName = resolveActiveAgentName(activeAgentId),
           activeAgentBadge = "OC",
-          activeAgentCaption = "Gateway session in progress",
+          activeAgentCaption = "网关会话进行中",
           agentCount = agents.size,
           agents = agents.take(4),
           footer = "If the gateway is reachable, reconnect should complete without intervention.",
@@ -1205,14 +1205,14 @@ class NodeRuntime(
       HomeCanvasGatewayState.Error, HomeCanvasGatewayState.Offline ->
         HomeCanvasPayload(
           gatewayState = if (state == HomeCanvasGatewayState.Error) "error" else "offline",
-          eyebrow = "Welcome to OpenClaw",
+          eyebrow = "欢迎使用 OpenClaw",
           title = "Your phone stays quiet until it is needed",
           subtitle =
             "Pair this device to your gateway to wake it only for real work, keep a live agent overview handy, and avoid battery-draining background loops.",
           gatewayLabel = gatewayLabel,
-          activeAgentName = "Main",
+          activeAgentName = "主页",
           activeAgentBadge = "OC",
-          activeAgentCaption = "Connect to load your agents",
+          activeAgentCaption = "连接以加载代理",
           agentCount = agents.size,
           agents = agents.take(4),
           footer = "When connected, the gateway can wake the phone with a silent push instead of holding an always-on session.",
@@ -1246,7 +1246,7 @@ class NodeRuntime(
       }
       return activeAgentId
     }
-    return gatewayAgents.firstOrNull()?.let { normalized(it.name) ?: it.id } ?: "Main"
+    return gatewayAgents.firstOrNull()?.let { normalized(it.name) ?: it.id } ?: "主页"
   }
 
   private fun homeCanvasAgents(activeAgentId: String): List<HomeCanvasAgentCard> {
@@ -1261,9 +1261,9 @@ class NodeRuntime(
           badge = homeCanvasBadge(agent),
           caption =
             when {
-              isActive -> "Active on this phone"
-              isDefault -> "Default agent"
-              else -> "Ready"
+              isActive -> "在此手机上激活"
+              isDefault -> "默认代理"
+              else -> "就绪"
             },
           isActive = isActive,
         )
