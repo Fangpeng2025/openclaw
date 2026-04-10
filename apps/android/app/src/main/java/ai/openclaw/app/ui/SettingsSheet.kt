@@ -541,7 +541,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
           ListItem(
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
-            headlineContent = { Text("Microphone", style = mobileHeadline) },
+            headlineContent = { Text("麦克风", style = mobileHeadline) },
             supportingContent = {
               Text(
                 if (micPermissionGranted) "Granted" else "Required for voice transcription.",
@@ -571,7 +571,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
           ListItem(
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
-            headlineContent = { Text("Camera", style = mobileHeadline) },
+            headlineContent = { Text("相机", style = mobileHeadline) },
             supportingContent = { Text("Photos and video clips (foreground only).", style = mobileCallout) },
             trailingContent = { Switch(checked = cameraEnabled, onCheckedChange = ::setCameraEnabledChecked) },
           )
