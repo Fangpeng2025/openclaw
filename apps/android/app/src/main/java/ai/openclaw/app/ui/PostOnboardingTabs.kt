@@ -277,7 +277,7 @@ private fun TopStatusBar(
             Box(modifier = Modifier.padding(4.dp))
           }
           Text(
-            text = statusText.trim().ifEmpty { "Offline" },
+            text = statusText.trim().ifEmpty { "离线" },
             style = mobileCaption1,
             color = chipText,
             maxLines = 1,
