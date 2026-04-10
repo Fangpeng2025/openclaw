@@ -151,7 +151,7 @@ class CallLogHandler private constructor(
   fun handleCallLogSearch(paramsJson: String?): GatewaySession.InvokeResult {
     if (!dataSource.hasReadPermission(appContext)) {
       return GatewaySession.InvokeResult.error(
-        code = "CALL_LOG_PERMISSION_REQUIRED",
+        code = "需要通话记录权限",
         message = "CALL_LOG_PERMISSION_REQUIRED: grant Call Log permission",
       )
     }
