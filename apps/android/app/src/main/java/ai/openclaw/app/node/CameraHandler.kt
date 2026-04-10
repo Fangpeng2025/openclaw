@@ -125,7 +125,7 @@ class CameraHandler(
       if (!isCameraClipWithinPayloadLimit(rawBytes)) {
         clipLog("payload too large: bytes=$rawBytes max=$CAMERA_CLIP_MAX_RAW_BYTES")
         withContext(Dispatchers.IO) { filePayload.file.delete() }
-        showCameraHud("Clip too large", CameraHudKind.Error, 2400)
+        showCameraHud("片段过大", CameraHudKind.Error, 2400)
         return GatewaySession.InvokeResult.error(
           code = "PAYLOAD_TOO_LARGE",
           message =
@@ -142,7 +142,7 @@ class CameraHandler(
       }
       val base64 = android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP)
       clipLog("returning base64 payload")
-      showCameraHud("Clip captured", CameraHudKind.Success, 1800)
+      showCameraHud("片段已捕获", CameraHudKind.Success, 1800)
       return GatewaySession.InvokeResult.ok(
         """{"format":"mp4","base64":"$base64","durationMs":${filePayload.durationMs},"hasAudio":${filePayload.hasAudio}}"""
       )
