@@ -140,7 +140,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
       listOfNotNull(Build.MANUFACTURER, Build.MODEL)
         .joinToString(" ")
         .trim()
-        .ifEmpty { "Android" }
+        .ifEmpty { "安卓" }
     }
   val appVersion =
     remember {
@@ -472,7 +472,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
           OutlinedTextField(
             value = displayName,
             onValueChange = viewModel::setDisplayName,
-            label = { Text("Name", style = mobileCaption1, color = mobileTextSecondary) },
+            label = { Text("名称", style = mobileCaption1, color = mobileTextSecondary) },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
             textStyle = mobileBody.copy(color = mobileText),
             colors = settingsTextFieldColors(),
@@ -494,7 +494,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
             ListItem(
               modifier = Modifier.fillMaxWidth(),
               colors = listItemColors,
-              headlineContent = { Text("Default Assistant", style = mobileHeadline) },
+              headlineContent = { Text("默认助手", style = mobileHeadline) },
               supportingContent = {
                 Text(
                   if (assistantRoleHeld) {
@@ -518,7 +518,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
                   shape = RoundedCornerShape(14.dp),
                 ) {
                   Text(
-                    if (assistantRoleHeld) "Manage" else "Enable",
+                    if (assistantRoleHeld) "管理" else "启用",
                     style = mobileCallout.copy(fontWeight = FontWeight.Bold),
                   )
                 }
@@ -544,7 +544,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
             headlineContent = { Text("麦克风", style = mobileHeadline) },
             supportingContent = {
               Text(
-                if (micPermissionGranted) "Granted" else "Required for voice transcription.",
+                if (micPermissionGranted) "已授予" else "Required for voice transcription.",
                 style = mobileCallout,
               )
             },
@@ -561,7 +561,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
                 shape = RoundedCornerShape(14.dp),
               ) {
                 Text(
-                  if (micPermissionGranted) "Manage" else "Grant",
+                  if (micPermissionGranted) "管理" else "授予",
                   style = mobileCallout.copy(fontWeight = FontWeight.Bold),
                 )
               }
@@ -593,7 +593,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
             colors = listItemColors,
             headlineContent = { Text("System Notifications", style = mobileHeadline) },
             supportingContent = {
-              Text("Alerts and foreground service.", style = mobileCallout)
+              Text("提醒和前台服务。", style = mobileCallout)
             },
             trailingContent = {
               Button(
@@ -608,7 +608,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
                 shape = RoundedCornerShape(14.dp),
               ) {
                 Text(
-                  if (notificationsPermissionGranted) "Manage" else "Grant",
+                  if (notificationsPermissionGranted) "管理" else "授予",
                   style = mobileCallout.copy(fontWeight = FontWeight.Bold),
                 )
               }
@@ -618,7 +618,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
           ListItem(
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
-            headlineContent = { Text("Notification Listener Access", style = mobileHeadline) },
+            headlineContent = { Text("通知监听器访问", style = mobileHeadline) },
             supportingContent = {
               Text(
                 "Required for `notifications.list`, `notifications.actions`, and forwarded notification events.",
@@ -632,7 +632,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
                 shape = RoundedCornerShape(14.dp),
               ) {
                 Text(
-                  if (notificationListenerEnabled) "Manage" else "Enable",
+                  if (notificationListenerEnabled) "管理" else "启用",
                   style = mobileCallout.copy(fontWeight = FontWeight.Bold),
                 )
               }
@@ -643,7 +643,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
             ListItem(
               modifier = Modifier.fillMaxWidth(),
               colors = listItemColors,
-              headlineContent = { Text("SMS", style = mobileHeadline) },
+              headlineContent = { Text("短信", style = mobileHeadline) },
               supportingContent = {
                 Text("Send and search SMS from this device.", style = mobileCallout)
               },
@@ -661,9 +661,9 @@ fun SettingsSheet(viewModel: MainViewModel) {
                 ) {
                   Text(
                     if (smsPermissionGranted) {
-                      "Manage"
+                      "管理"
                     } else {
-                      "Grant"
+                      "授予"
                     },
                     style = mobileCallout.copy(fontWeight = FontWeight.Bold),
                   )
@@ -677,7 +677,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
         ListItem(
           modifier = Modifier.settingsRowModifier(),
           colors = listItemColors,
-          headlineContent = { Text("Forward Notification Events", style = mobileHeadline) },
+          headlineContent = { Text("转发通知事件", style = mobileHeadline) },
           supportingContent = {
             Text(
               if (notificationListenerEnabled) {
@@ -700,7 +700,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
       item {
         Text(
           if (notificationListenerEnabled) {
-            "Forwarding is available when enabled below."
+            "启用下方选项后可使用转发。"
           } else {
             "Forwarding controls stay disabled until Notification Listener Access is enabled in system Settings."
           },
@@ -736,7 +736,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
             colors = listItemColors,
             headlineContent = { Text("Package Filter: Blocklist", style = mobileHeadline) },
             supportingContent = {
-              Text("All packages except listed IDs are forwarded.", style = mobileCallout)
+              Text("除列出 ID 外的所有包都会被转发。", style = mobileCallout)
             },
             trailingContent = {
               RadioButton(
@@ -759,7 +759,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
             shape = RoundedCornerShape(14.dp),
           ) {
             Text(
-              if (notificationPickerExpanded) "Close App Picker" else "Open App Picker",
+              if (notificationPickerExpanded) "关闭应用选择器" else "Open App Picker",
               style = mobileCallout.copy(fontWeight = FontWeight.Bold),
             )
           }
@@ -831,7 +831,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
         ListItem(
           modifier = Modifier.settingsRowModifier().alpha(notificationForwardingControlsAlpha),
           colors = listItemColors,
-          headlineContent = { Text("Quiet Hours", style = mobileHeadline) },
+          headlineContent = { Text("勿扰时段", style = mobileHeadline) },
           supportingContent = {
             Text("Suppress forwarding during a local time window.", style = mobileCallout)
           },
@@ -907,7 +907,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
         OutlinedTextField(
           value = notificationRateDraft,
           onValueChange = { notificationRateDraft = it.filter { c -> c.isDigit() } },
-          label = { Text("Max Events / Minute", style = mobileCaption1, color = mobileTextSecondary) },
+          label = { Text("每分钟最大事件数", style = mobileCaption1, color = mobileTextSecondary) },
           modifier = Modifier.fillMaxWidth(),
           textStyle = mobileBody.copy(color = mobileText),
           colors = settingsTextFieldColors(),
@@ -978,8 +978,8 @@ fun SettingsSheet(viewModel: MainViewModel) {
           ListItem(
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
-            headlineContent = { Text("Photos", style = mobileHeadline) },
-            supportingContent = { Text("Access recent photos.", style = mobileCallout) },
+            headlineContent = { Text("照片", style = mobileHeadline) },
+            supportingContent = { Text("访问最近的照片。", style = mobileCallout) },
             trailingContent = {
               Button(
                 onClick = {
@@ -993,7 +993,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
                 shape = RoundedCornerShape(14.dp),
               ) {
                 Text(
-                  if (photosPermissionGranted) "Manage" else "Grant",
+                  if (photosPermissionGranted) "管理" else "授予",
                   style = mobileCallout.copy(fontWeight = FontWeight.Bold),
                 )
               }
@@ -1003,7 +1003,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
           ListItem(
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
-            headlineContent = { Text("Contacts", style = mobileHeadline) },
+            headlineContent = { Text("联系人", style = mobileHeadline) },
             supportingContent = { Text("Search and add contacts.", style = mobileCallout) },
             trailingContent = {
               Button(
@@ -1018,7 +1018,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
                 shape = RoundedCornerShape(14.dp),
               ) {
                 Text(
-                  if (contactsPermissionGranted) "Manage" else "Grant",
+                  if (contactsPermissionGranted) "管理" else "授予",
                   style = mobileCallout.copy(fontWeight = FontWeight.Bold),
                 )
               }
@@ -1028,7 +1028,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
           ListItem(
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
-            headlineContent = { Text("Calendar", style = mobileHeadline) },
+            headlineContent = { Text("日历", style = mobileHeadline) },
             supportingContent = { Text("Read and create events.", style = mobileCallout) },
             trailingContent = {
               Button(
@@ -1043,7 +1043,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
                 shape = RoundedCornerShape(14.dp),
               ) {
                 Text(
-                  if (calendarPermissionGranted) "Manage" else "Grant",
+                  if (calendarPermissionGranted) "管理" else "授予",
                   style = mobileCallout.copy(fontWeight = FontWeight.Bold),
                 )
               }
@@ -1054,7 +1054,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
             ListItem(
               modifier = Modifier.fillMaxWidth(),
               colors = listItemColors,
-              headlineContent = { Text("Call Log", style = mobileHeadline) },
+              headlineContent = { Text("通话记录", style = mobileHeadline) },
               supportingContent = { Text("Search recent call history.", style = mobileCallout) },
               trailingContent = {
                 Button(
@@ -1069,7 +1069,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
                   shape = RoundedCornerShape(14.dp),
                 ) {
                   Text(
-                    if (callLogPermissionGranted) "Manage" else "Grant",
+                    if (callLogPermissionGranted) "管理" else "授予",
                     style = mobileCallout.copy(fontWeight = FontWeight.Bold),
                   )
                 }
@@ -1081,14 +1081,14 @@ fun SettingsSheet(viewModel: MainViewModel) {
             ListItem(
               modifier = Modifier.fillMaxWidth(),
               colors = listItemColors,
-              headlineContent = { Text("Motion", style = mobileHeadline) },
+              headlineContent = { Text("运动", style = mobileHeadline) },
               supportingContent = { Text("Track steps and activity.", style = mobileCallout) },
               trailingContent = {
                 val motionButtonLabel =
                   when {
-                    !motionPermissionRequired -> "Manage"
-                    motionPermissionGranted -> "Manage"
-                    else -> "Grant"
+                    !motionPermissionRequired -> "管理"
+                    motionPermissionGranted -> "管理"
+                    else -> "授予"
                   }
                 Button(
                   onClick = {
@@ -1122,8 +1122,8 @@ fun SettingsSheet(viewModel: MainViewModel) {
           ListItem(
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
-            headlineContent = { Text("Off", style = mobileHeadline) },
-            supportingContent = { Text("Disable location sharing.", style = mobileCallout) },
+            headlineContent = { Text("关", style = mobileHeadline) },
+            supportingContent = { Text("禁用位置共享。", style = mobileCallout) },
             trailingContent = {
               RadioButton(
                 selected = locationMode == LocationMode.Off,
@@ -1136,7 +1136,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
             headlineContent = { Text("While Using", style = mobileHeadline) },
-            supportingContent = { Text("Only while OpenClaw is open.", style = mobileCallout) },
+            supportingContent = { Text("仅在 OpenClaw 打开时。", style = mobileCallout) },
             trailingContent = {
               RadioButton(
                 selected = locationMode == LocationMode.WhileUsing,
@@ -1175,14 +1175,14 @@ fun SettingsSheet(viewModel: MainViewModel) {
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
             headlineContent = { Text("Prevent Sleep", style = mobileHeadline) },
-            supportingContent = { Text("Keep screen awake while open.", style = mobileCallout) },
+            supportingContent = { Text("打开时保持屏幕常亮。", style = mobileCallout) },
             trailingContent = { Switch(checked = preventSleep, onCheckedChange = viewModel::setPreventSleep) },
           )
           HorizontalDivider(color = mobileBorder)
           ListItem(
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
-            headlineContent = { Text("Debug Canvas", style = mobileHeadline) },
+            headlineContent = { Text("调试画布", style = mobileHeadline) },
             supportingContent = { Text("Show status overlay on canvas.", style = mobileCallout) },
             trailingContent = {
               Switch(
