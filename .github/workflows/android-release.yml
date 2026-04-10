@@ -1,0 +1,114 @@
+name: Android APK Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+          - debug
+          - release
+
+permissions:
+  contents: write
+
+env:
+  ANDROID_SDK_ROOT: ${{ github.workspace }}/android-sdk
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          
+      - name: Setup Android SDK
+        run: |
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+          curl -fsSL "https://dl.google.com/android/repository/commandlinetools-linux-12266719_latest.zip" -o /tmp/cmdline-tools.zip
+          unzip -q /tmp/cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools
+          mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools $ANDROID_SDK_ROOT/cmdline-tools/latest
+          
+          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
+          
+      - name: Install SDK packages
+        run: |
+          yes | sdkmanager --licenses >/dev/null
+          sdkmanager --install "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+          
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.11.1
+          
+      - name: Get version
+        id: version
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=$(date +%Y.%m.%d)-$(git rev-parse --short HEAD)
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+      - name: Build Debug APK (Play)
+        if: inputs.build_type == 'debug' || inputs.build_type == ''
+        working-directory: apps/android
+        run: ./gradlew --no-daemon :app:assemblePlayDebug :app:assembleThirdPartyDebug
+        
+      - name: Build Release APK (Play)
+        if: inputs.build_type == 'release'
+        working-directory: apps/android
+        env:
+          OPENCLAW_ANDROID_STORE_FILE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          OPENCLAW_ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          OPENCLAW_ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          OPENCLAW_ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "$OPENCLAW_ANDROID_STORE_FILE" ]; then
+            echo "$OPENCLAW_ANDROID_STORE_FILE" | base64 -d > /tmp/keystore.jks
+            echo "OPENCLAW_ANDROID_STORE_FILE=/tmp/keystore.jks" >> $GITHUB_ENV
+            ./gradlew --no-daemon :app:assemblePlayRelease :app:assembleThirdPartyRelease
+          else
+            echo "No signing secrets found, building debug instead"
+            ./gradlew --no-daemon :app:assemblePlayDebug :app:assembleThirdPartyDebug
+          fi
+          
+      - name: Find APKs
+        id: apks
+        run: |
+          find apps/android/app/build/outputs/apk -name "*.apk" -type f
+          APK_LIST=$(find apps/android/app/build/outputs/apk -name "*.apk" -type f | head -10)
+          echo "apks<<EOF" >> $GITHUB_OUTPUT
+          echo "$APK_LIST" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+      - name: Upload APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: openclaw-android-${{ steps.version.outputs.version }}
+          path: apps/android/app/build/outputs/apk/**/*.apk
+          retention-days: 30
+          
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: apps/android/app/build/outputs/apk/**/*.apk
+          generate_release_notes: true
